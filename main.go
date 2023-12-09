@@ -7,15 +7,8 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/crowdersoup/todo/store"
+	"github.com/crowdersoup/todo/todos"
 )
-
-const STORE_KEY string = "todos"
-
-type Todo struct {
-	ID   string
-	Text string
-	Done bool
-}
 
 type addTodoForm struct {
 	Text string
@@ -49,52 +42,29 @@ func main() {
 
 	router.GET("/todos", func(c *gin.Context) {
 		s := store.NewStore(c)
-
-		var todos []Todo
-		t, _ := s.Get(STORE_KEY)
-		if t == nil {
-			todos = []Todo{}
-		} else {
-			todos = t.([]Todo)
-		}
-
-		err := s.Set(STORE_KEY, todos)
-		if err != nil {
-			panic(err)
-		}
+		t := todos.NewTodoer(s)
 
 		c.HTML(http.StatusOK, "todos.html", gin.H{
-			STORE_KEY: todos,
+			todos.STORE_KEY: t.GetAll(),
 		})
 	})
 
 	router.POST("/todos", func(c *gin.Context) {
 		s := store.NewStore(c)
-		var form addTodoForm
+		t := todos.NewTodoer(s)
 
+		var form addTodoForm
 		c.Bind(&form)
 
-		var todos []Todo
-		t, _ := s.Get(STORE_KEY)
-		if t == nil {
-			todos = []Todo{}
-		} else {
-			todos = t.([]Todo)
-		}
-
-		todos = append(todos, Todo{
+		newTodo := todos.Todo{
 			ID:   uuid.NewString(),
 			Text: form.Text,
-		})
-
-		// Ensure we save the current list of todos
-		err := s.Set(STORE_KEY, todos)
-		if err != nil {
-			panic(err)
 		}
 
+		t.AddOrUpdate(newTodo)
+
 		c.HTML(http.StatusOK, "todos.html", gin.H{
-			STORE_KEY: todos,
+			todos.STORE_KEY: t.GetAll(),
 		})
 	})
 
@@ -103,6 +73,18 @@ func main() {
 		if err := c.ShouldBindUri(&params); err != nil {
 			panic("bad request")
 		}
+
+		s := store.NewStore(c)
+		t := todos.NewTodoer(s)
+
+		todo := t.Get(params.ID)
+		todo.Done = !todo.Done
+
+		t.AddOrUpdate(todo)
+
+		c.HTML(http.StatusOK, "todos.html", gin.H{
+			todos.STORE_KEY: t.GetAll(),
+		})
 	})
 
 	router.Run() // listen and serve on 0.0.0.0:8080
