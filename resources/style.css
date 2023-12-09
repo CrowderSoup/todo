@@ -17,3 +17,7 @@ li {
   flex-direction: column;
   justify-content: center;
 }
+
+li.done label {
+  text-decoration: line-through;
+}

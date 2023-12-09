@@ -18,10 +18,6 @@ type urlParams struct {
 	ID string `uri:"id"`
 }
 
-type markAsDoneForm struct {
-	ID string
-}
-
 func main() {
 	router := gin.Default()
 
@@ -68,7 +64,7 @@ func main() {
 		})
 	})
 
-	router.POST("/todos/:id", func(c *gin.Context) {
+	router.PATCH("/todos/:id", func(c *gin.Context) {
 		var params urlParams
 		if err := c.ShouldBindUri(&params); err != nil {
 			panic("bad request")

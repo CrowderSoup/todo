@@ -4,11 +4,14 @@
   <form>
     <input
       type="checkbox"
+      id="{{ .ID }}"
       name="{{ .ID }}"
-      hx-post="/todos/{{ .ID }}"
+      hx-patch="/todos/{{ .ID }}"
       hx-target="#todo-list"
       {{ if .Done }}checked="true"{{ end }} />
-    {{ .Text }}
+    <label for="{{ .ID }}">
+      {{ .Text }}
+    </label>
   </form>
 </li>
 
