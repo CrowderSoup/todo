@@ -1,0 +1,19 @@
+h1 {
+  text-align: center;
+}
+
+li {
+  list-style: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

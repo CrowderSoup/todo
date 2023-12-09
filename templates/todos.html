@@ -1,0 +1,13 @@
+{{ range .todos }}
+<li 
+  {{ if .Done }}class="done"{{ end }}>
+  <input
+    type="checkbox"
+    name="{{ .ID }}"
+    hx-post="/todos/{{ .ID }}"
+    hx-trigger="changed"
+    {{ if .Done }}checked="true"{{ end }} />
+  {{ .Text }}
+</li>
+
+{{ end }}

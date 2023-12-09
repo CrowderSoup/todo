@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo: Go/HTMX</title>
+
+    <!-- Load CSS -->
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" href="/style.css">
+
+    <!-- Load HTMX -->
+    <script 
+      src="https://unpkg.com/htmx.org@1.9.9" 
+      integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX" 
+      crossorigin="anonymous">
+    </script>
+  </head>
+  <body>
+    <h1>ToDo App</h1>
+    <div class="container">
+      <div>
+        <ul 
+          id="todo-list"
+          hx-trigger="load"
+          hx-get="/todos"
+          hx-swap="innerHTML ignoreTitle:true">
+        </ul>
+      </div>
+      <div>
+        <form 
+          hx-post="/todos"
+          hx-target="#todo-list"
+          hx-on::after-request="this.reset()"
+          >
+          <input 
+            type="text"
+            name="Text"
+            placeholder="Todo..."
+          />
+          <button
+            type="submit"
+          >
+            Add
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
