@@ -1,0 +1,17 @@
+
+<li id="{{ .ID }}-list-item"
+  {{ if .Done }}class="done"{{ end }}>
+  <form>
+    <input
+      type="checkbox"
+      id="{{ .ID }}"
+      name="{{ .ID }}"
+      hx-patch="/todos/{{ .ID }}"
+      hx-target="#{{ .ID }}-list-item"
+      hx-swap="outterHTML"
+      {{ if .Done }}checked="true"{{ end }} />
+    <label for="{{ .ID }}">
+      {{ .Text }}
+    </label>
+  </form>
+</li>

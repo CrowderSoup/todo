@@ -1,18 +1,3 @@
 {{ range .todos }}
-<li 
-  {{ if .Done }}class="done"{{ end }}>
-  <form>
-    <input
-      type="checkbox"
-      id="{{ .ID }}"
-      name="{{ .ID }}"
-      hx-patch="/todos/{{ .ID }}"
-      hx-target="#todo-list"
-      {{ if .Done }}checked="true"{{ end }} />
-    <label for="{{ .ID }}">
-      {{ .Text }}
-    </label>
-  </form>
-</li>
-
+{{ template "todo.html" . }}
 {{ end }}

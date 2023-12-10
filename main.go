@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
+	"github.com/matoous/go-nanoid/v2"
 
 	"github.com/crowdersoup/todo/store"
 	"github.com/crowdersoup/todo/todos"
@@ -52,8 +52,9 @@ func main() {
 		var form addTodoForm
 		c.Bind(&form)
 
+		id, _ := gonanoid.New()
 		newTodo := todos.Todo{
-			ID:   uuid.NewString(),
+			ID:   id,
 			Text: form.Text,
 		}
 
@@ -78,9 +79,7 @@ func main() {
 
 		t.AddOrUpdate(todo)
 
-		c.HTML(http.StatusOK, "todos.html", gin.H{
-			todos.STORE_KEY: t.GetAll(),
-		})
+		c.HTML(http.StatusOK, "todo.html", todo)
 	})
 
 	router.Run() // listen and serve on 0.0.0.0:8080
