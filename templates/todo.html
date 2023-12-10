@@ -8,7 +8,7 @@
       name="{{ .ID }}"
       hx-patch="/todos/{{ .ID }}"
       hx-target="#{{ .ID }}-list-item"
-      hx-swap="outterHTML"
+      hx-swap="outterHTML ignoreTitle:true"
       {{ if .Done }}checked="true"{{ end }} />
     <label for="{{ .ID }}">
       {{ .Text }}

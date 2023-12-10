@@ -10,6 +10,8 @@ import (
 	"github.com/crowdersoup/todo/todos"
 )
 
+const ALPHABET string = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ-_"
+
 type addTodoForm struct {
 	Text string
 }
@@ -52,7 +54,7 @@ func main() {
 		var form addTodoForm
 		c.Bind(&form)
 
-		id, _ := gonanoid.New()
+		id, _ := gonanoid.Generate(ALPHABET, 15)
 		newTodo := todos.Todo{
 			ID:   id,
 			Text: form.Text,
@@ -60,9 +62,7 @@ func main() {
 
 		t.AddOrUpdate(newTodo)
 
-		c.HTML(http.StatusOK, "todos.html", gin.H{
-			todos.STORE_KEY: t.GetAll(),
-		})
+		c.HTML(http.StatusOK, "todo.html", newTodo)
 	})
 
 	router.PATCH("/todos/:id", func(c *gin.Context) {

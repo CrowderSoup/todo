@@ -32,6 +32,7 @@
           id="add-todo-form"
           hx-post="/todos"
           hx-target="#todo-list"
+          hx-swap="beforeend ignoreTitle:true"
           hx-on::after-request="this.reset()"
           >
           <input 
